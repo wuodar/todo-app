@@ -52,7 +52,7 @@ public class ChecklistItemServiceTest {
     @Test
     public void shouldAddChecklistItem() {
         //given
-        ChecklistItemEntity checklistItem = new ChecklistItemEntity(1, "Task 1", false);
+        ChecklistItemEntity checklistItem = new ChecklistItemEntity(1, "Task 1", false, null);
 
         //when
         ChecklistItemEntity addedChecklistItem = checklistItemsService.addChecklistItem(checklistItem);
@@ -66,7 +66,7 @@ public class ChecklistItemServiceTest {
     @Test
     public void shouldGetChecklistItem() {
         //given
-        ChecklistItemEntity checklistItem = new ChecklistItemEntity(1, "Task 1", false);
+        ChecklistItemEntity checklistItem = new ChecklistItemEntity(1, "Task 1", false, null);
         checklistItemsRepository.save(checklistItem);
 
         //when
@@ -79,8 +79,8 @@ public class ChecklistItemServiceTest {
     @Test
     public void shouldUpdateNote() {
         //given
-        ChecklistItemEntity checklistItem = new ChecklistItemEntity(1, "Task 1", false);
-        ChecklistItemEntity checklistItem2 = new ChecklistItemEntity(1, "Task 1 changed", true);
+        ChecklistItemEntity checklistItem = new ChecklistItemEntity(1, "Task 1", false, null);
+        ChecklistItemEntity checklistItem2 = new ChecklistItemEntity(1, "Task 1 changed", true, null);
         checklistItemsRepository.save(checklistItem);
 
         //when

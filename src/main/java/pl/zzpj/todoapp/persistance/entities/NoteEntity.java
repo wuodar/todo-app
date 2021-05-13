@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -21,6 +23,10 @@ public class NoteEntity {
     private long id;
     private String title;
     private String description;
-    private long dueDate;
+    private long dueTime;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "note")
+    private Set<ChecklistItemEntity> checklistItems = new HashSet<>();
+
 
 }
