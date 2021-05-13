@@ -52,19 +52,6 @@ public class NotesServiceTest {
     }
 
     @Test
-    public void shouldSaveNote() {
-        //given
-        NoteEntity note = new NoteEntity(1, "Note 1", "something to do", LocalDateTime.of(2021, 6, 1, 13, 30).toEpochSecond(ZoneOffset.UTC));
-
-        //when
-        notesRepository.save(note);
-
-        //then
-        assertThat(notesRepository.findById(1L).isPresent()).isTrue();
-        assertThat(notesRepository.findById(1L).get()).isEqualTo(note);
-    }
-
-    @Test
     public void shouldAddNote() {
         //given
         NoteEntity note = new NoteEntity(1, "Note 1", "something to do", LocalDateTime.of(2021, 6, 1, 13, 30).toEpochSecond(ZoneOffset.UTC));
