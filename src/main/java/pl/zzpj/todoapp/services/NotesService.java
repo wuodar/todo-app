@@ -2,6 +2,7 @@ package pl.zzpj.todoapp.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pl.zzpj.todoapp.errors.ChecklistItemNotFoundException;
 import pl.zzpj.todoapp.errors.NoteNotFoundException;
 import pl.zzpj.todoapp.persistance.ChecklistItemsRepository;
 import pl.zzpj.todoapp.persistance.NotesRepository;
@@ -19,6 +20,7 @@ import java.util.stream.Collectors;
 public class NotesService {
 
     public static final String NOTE_NOT_FOUND_MSG = "Note with id '%s' not found.";
+    public static final String CHECKLIST_ITEM_NOT_FOUND_MSG = "Checklist item with id '%s' not found.";
 
     private final NotesRepository notesRepository;
     private final ChecklistItemsRepository checklistItemsRepository;
@@ -36,8 +38,7 @@ public class NotesService {
     }
 
     public List<NoteEntity> getAllNotes() {
-        return notesRepository
-                .findAll();
+        return notesRepository.findAll();
     }
 
     public NoteEntity addNote(NoteEntity noteEntity) {
@@ -45,8 +46,13 @@ public class NotesService {
         return savedNote;
     }
 
+    @Transactional
     public NoteEntity updateNote(NoteEntity noteEntity) {
+        long id = noteEntity.getId();
+        notesRepository.findById(id)
+                .orElseThrow(() -> new NoteNotFoundException(String.format(NOTE_NOT_FOUND_MSG, id)));
         NoteEntity updatedNote = notesRepository.save(noteEntity);
+
         return updatedNote;
     }
 
@@ -73,6 +79,26 @@ public class NotesService {
 
         noteEntity.getChecklistItems().addAll(addedChecklistItems);
         notesRepository.save(noteEntity);
+
         return addedChecklistItems;
+    }
+
+    @Transactional
+    public ChecklistItemEntity updateChecklistItem(ChecklistItemEntity checklistItemEntity) {
+        long id = checklistItemEntity.getId();
+        checklistItemsRepository.findById(id)
+                .orElseThrow(() -> new ChecklistItemNotFoundException(String.format(CHECKLIST_ITEM_NOT_FOUND_MSG, id)));
+        ChecklistItemEntity savedChecklistItem = checklistItemsRepository.save(checklistItemEntity);
+
+        return savedChecklistItem;
+    }
+
+    @Transactional
+    public ChecklistItemEntity removeChecklistItem(long id) {
+        ChecklistItemEntity checklistItemEntity = checklistItemsRepository.findById(id)
+                .orElseThrow(() -> new ChecklistItemNotFoundException(String.format(CHECKLIST_ITEM_NOT_FOUND_MSG, id)));
+        checklistItemsRepository.delete(checklistItemEntity);
+
+        return checklistItemEntity;
     }
 }
