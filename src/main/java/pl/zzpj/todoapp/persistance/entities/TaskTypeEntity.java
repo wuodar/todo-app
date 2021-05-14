@@ -6,22 +6,23 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "ChecklistItems")
-@EqualsAndHashCode(exclude = "note")
-public class ChecklistItemEntity {
+@Table(name = "TaskTypes")
+@EqualsAndHashCode
+public class TaskTypeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private long id;
-    private String text;
-    private boolean isDone = false;
+    private String name;
+    private int rgb;
 
-    @ManyToOne
-    @JoinColumn(name = "note_id", nullable = false)
-    private NoteEntity note;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "task_type_id")
+    private Set<NoteEntity> noteEntities = new HashSet<>();
 }

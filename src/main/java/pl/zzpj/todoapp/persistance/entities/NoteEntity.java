@@ -6,7 +6,6 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -28,5 +27,7 @@ public class NoteEntity {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "note")
     private Set<ChecklistItemEntity> checklistItems = new HashSet<>();
 
-
+    @ManyToOne
+    @JoinColumn(name = "task_type_id", nullable = false)
+    private TaskTypeEntity taskType;
 }
