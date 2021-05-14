@@ -13,9 +13,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import pl.zzpj.todoapp.TodoAppApplication;
 import pl.zzpj.todoapp.errors.ChecklistItemNotFoundException;
 import pl.zzpj.todoapp.persistance.ChecklistItemsRepository;
-import pl.zzpj.todoapp.persistance.entities.ChecklistItemEntity;
-
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -47,50 +44,6 @@ public class ChecklistItemServiceTest {
         //then
         assertThat(result).isInstanceOf(ChecklistItemNotFoundException.class);
         assertThat(result.getMessage()).isEqualTo("Checklist item with id '1' not found.");
-    }
-
-    @Test
-    public void shouldAddChecklistItem() {
-        //given
-        ChecklistItemEntity checklistItem = new ChecklistItemEntity(1, "Task 1", false, null);
-
-        //when
-        ChecklistItemEntity addedChecklistItem = checklistItemsService.addChecklistItem(checklistItem);
-
-        //then
-        assertThat(checklistItem).isEqualTo(addedChecklistItem);
-        assertThat(checklistItemsRepository.findById(1L).isPresent()).isTrue();
-        assertThat(checklistItemsRepository.findById(1L).get()).isEqualTo(checklistItem);
-    }
-
-    @Test
-    public void shouldGetChecklistItem() {
-        //given
-        ChecklistItemEntity checklistItem = new ChecklistItemEntity(1, "Task 1", false, null);
-        checklistItemsRepository.save(checklistItem);
-
-        //when
-        ChecklistItemEntity checklistItemFromRepo = checklistItemsService.getChecklistItem(1L);
-
-        //then
-        assertThat(checklistItemFromRepo).isEqualTo(checklistItem);
-    }
-
-    @Test
-    public void shouldUpdateNote() {
-        //given
-        ChecklistItemEntity checklistItem = new ChecklistItemEntity(1, "Task 1", false, null);
-        ChecklistItemEntity checklistItem2 = new ChecklistItemEntity(1, "Task 1 changed", true, null);
-        checklistItemsRepository.save(checklistItem);
-
-        //when
-        ChecklistItemEntity updatedChecklistItem = checklistItemsService.updateChecklistItem(checklistItem2);
-        Optional<ChecklistItemEntity> checklistItemFromRepo = checklistItemsRepository.findById(1L);
-
-        //then
-        assertThat(checklistItem2).isEqualTo(updatedChecklistItem);
-        assertThat(checklistItemFromRepo.isPresent()).isTrue();
-        assertThat(checklistItemFromRepo.get()).isEqualTo(checklistItem2);
     }
 }
 
